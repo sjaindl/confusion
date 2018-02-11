@@ -26,6 +26,9 @@
       </md-card-actions>
     </md-card>
   </div>
+  <div [hidden]="dish">
+    <md-spinner></md-spinner><h4>Loading.. Please Wait</h4>
+  </div>
 
   <div fxFlex="40">
     <h1>Comments</h1>
@@ -36,6 +39,9 @@
         <p md-line>-- {{comment.author}} {{comment.date | date}}</p>
       </md-list-item>
     </md-list>
+  </div>
+  <div [hidden]="dish">
+    <md-spinner></md-spinner><h4>Loading.. Please Wait</h4>
   </div>
 
 </div>
