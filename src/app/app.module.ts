@@ -20,8 +20,13 @@ import { LoginComponent } from './login/login.component'
 import { DishService } from './services/dish.service';
 import { PromotionService } from './services/promotion.service';
 import { LeaderService } from './services/leader.service';
+import { ProcessHttpmsgService } from './services/process-httpmsg.service';
+
+import { RestangularModule, Restangular } from 'ngx-restangular';
+import { RestangularConfigFactory } from './shared/restConfig';
 
 import 'hammerjs';
+import { baseURL } from './shared/baseurl';
 
 
 @NgModule({
@@ -41,13 +46,19 @@ import 'hammerjs';
     BrowserAnimationsModule,
     FormsModule,
     HttpModule,
+    RestangularModule.forRoot(RestangularConfigFactory),
     MaterialModule,
     FlexLayoutModule,
     AppRoutingModule,
     ReactiveFormsModule
   ],
   entryComponents: [LoginComponent],
-  providers: [DishService, PromotionService, LeaderService],
+  providers: [DishService, 
+              PromotionService, 
+              LeaderService,
+              ProcessHttpmsgService,
+              { provide: 'BaseURL', useValue: baseURL}
+    ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
