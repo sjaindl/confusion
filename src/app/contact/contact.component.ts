@@ -1,17 +1,32 @@
 import { Component, OnInit } from '@angular/core';
 import { Feedback, ContactType } from '../shared/feedback';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { flyInOut, visibility, expand } from '../animations/app.animation';
+import { FeedbackService } from '../services/feedback.service';
 
 @Component({
   selector: 'app-contact',
   templateUrl: './contact.component.html',
-  styleUrls: ['./contact.component.scss']
+  styleUrls: ['./contact.component.scss'],
+  host: {
+    '[@flyInOut]': 'true',
+    'style': 'display: block;'
+    },
+    animations: [
+      flyInOut(),
+      visibility(),
+      expand()
+    ]
 })
 export class ContactComponent implements OnInit {
 
   feedbackForm: FormGroup;
   feedback: Feedback;
+  submittedFeedback = null;
   contactType = ContactType;
+
+  visibility = 'shown';
+  spinnerVisibility = 'hidden';
 
   formErrors = {
     'firstname': '',
@@ -41,7 +56,8 @@ export class ContactComponent implements OnInit {
     },
   };
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder,
+              private feedbackService: FeedbackService) {
     this.createForm();
    }
 
@@ -85,6 +101,19 @@ export class ContactComponent implements OnInit {
   onSubmit() {
     this.feedback = this.feedbackForm.value;
     console.log(this.feedback);
+    this.visibility = 'hidden';
+    this.spinnerVisibility = 'shown';
+
+    this.feedbackService.submitFeedback(this.feedback)
+      .subscribe(feedback => {
+                              this.spinnerVisibility = 'hidden';
+                              this.submittedFeedback = feedback;
+
+                              setTimeout(() => {
+                                this.submittedFeedback = null;
+                                this.visibility = 'shown'; 
+                              }, 5000);
+
     this.feedbackForm.reset({
       firstname: '',
       lastname: '',
