@@ -112,7 +112,7 @@ export class ContactComponent implements OnInit {
                               setTimeout(() => {
                                 this.submittedFeedback = null;
                                 this.visibility = 'shown'; 
-                              }, 5000);
+                              }, 5000);});
 
     this.feedbackForm.reset({
       firstname: '',
